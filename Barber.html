@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber Shop JC | Estilo, Precisión y Elegancia</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        'gold-light': '#F3E5AB',
+                        'gold-dark': '#aa8929',
+                        'dark-900': '#050505',
+                        'dark-800': '#0f0f0f',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        script: ['Great Vibes', 'cursive'],
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.5)',
+                        'gold-glow': '0 0 25px rgba(212, 175, 55, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #aa8929; }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+
+        /* Mobile menu */
+        #mobile-menu {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background: rgba(15, 15, 15, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s ease;
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px -10px rgba(212, 175, 55, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-300 font-sans antialiased overflow-x-hidden selection:bg-gold selection:text-black">
+    
+    <!-- FONDO FOTOGRÁFICO INCREÍBLE (Fijo y con efecto Parallax simulado) -->
+    <div class="fixed inset-0 z-0 pointer-events-none">
+        <!-- Imagen de barbería elegante -->
+        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2500&q=80" 
+             alt="Fondo Barbería" 
+             class="w-full h-full object-cover opacity-30 grayscale mix-blend-luminosity">
+        
+        <!-- Gradientes superpuestos para asegurar que el texto sea legible -->
+        <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/70 to-black/95"></div>
+        
+        <!-- Iluminación dorada ambiental (esquinas) -->
+        <div class="absolute top-0 left-0 w-[800px] h-[800px] bg-[radial-gradient(ellipse_at_top_left,rgba(212,175,55,0.07),transparent_60%)]"></div>
+        <div class="absolute bottom-0 right-0 w-[800px] h-[800px] bg-[radial-gradient(ellipse_at_bottom_right,rgba(212,175,55,0.07),transparent_60%)]"></div>
+    </div>
+
+    <!-- Contenedor principal que va por encima del fondo fijo -->
+    <div class="relative z-10">
+
+        <!-- Navbar (Glass) -->
+        <nav id="navbar" class="fixed w-full z-50 transition-all duration-500 glass-panel border-b-0 shadow-none bg-transparent backdrop-blur-none">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-24">
+                    <!-- Logo -->
+                    <div class="flex-shrink-0 flex items-center group">
+                        <a href="#" class="font-serif text-2xl md:text-3xl font-bold tracking-widest text-white transition-all drop-shadow-md">
+                            BARBER SHOP <span class="text-gold group-hover:text-gold-light transition-colors">JC</span>
+                        </a>
+                    </div>
+
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex space-x-10 items-center">
+                        <a href="#inicio" class="text-gray-300 hover:text-white transition-colors text-xs uppercase tracking-[0.2em] font-medium relative after:absolute after:-bottom-2 after:left-0 after:h-[1px] after:w-0 after:bg-gold hover:after:w-full after:transition-all after:duration-300">Inicio</a>
+                        <a href="#nosotros" class="text-gray-300 hover:text-white transition-colors text-xs uppercase tracking-[0.2em] font-medium relative after:absolute after:-bottom-2 after:left-0 after:h-[1px] after:w-0 after:bg-gold hover:after:w-full after:transition-all after:duration-300">Nosotros</a>
+                        <a href="#servicios" class="text-gray-300 hover:text-white transition-colors text-xs uppercase tracking-[0.2em] font-medium relative after:absolute after:-bottom-2 after:left-0 after:h-[1px] after:w-0 after:bg-gold hover:after:w-full after:transition-all after:duration-300">Servicios</a>
+                        <a href="#contacto" class="bg-gradient-to-r from-gold-dark to-gold text-black px-8 py-3 rounded font-bold uppercase tracking-[0.2em] text-xs hover:from-white hover:to-white transition-all shadow-gold-glow">Contacto</a>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden flex items-center">
+                        <button id="mobile-menu-btn" class="text-white hover:text-gold focus:outline-none transition-colors">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Panel -->
+            <div id="mobile-menu" class="md:hidden glass-panel border-t border-white/10 absolute w-full">
+                <div class="px-4 pt-4 pb-8 text-center">
+                    <a href="#inicio" class="mobile-link block py-4 text-gray-300 hover:text-white uppercase tracking-[0.2em] text-xs">Inicio</a>
+                    <div class="h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent mx-10"></div>
+                    <a href="#nosotros" class="mobile-link block py-4 text-gray-300 hover:text-white uppercase tracking-[0.2em] text-xs">Nosotros</a>
+                    <div class="h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent mx-10"></div>
+                    <a href="#servicios" class="mobile-link block py-4 text-gray-300 hover:text-white uppercase tracking-[0.2em] text-xs">Servicios</a>
+                    <div class="h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent mx-10"></div>
+                    <a href="#contacto" class="mobile-link block py-4 text-gold uppercase tracking-[0.2em] text-xs font-bold mt-2">Contacto</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-hidden">
+            <!-- Capa extra de contraste solo para el Hero -->
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)] opacity-60 pointer-events-none"></div>
+            
+            <div class="relative z-20 text-center px-4 w-full max-w-5xl mx-auto reveal mt-10">
+                <span class="text-gold font-bold tracking-[0.4em] uppercase text-xs md:text-sm mb-6 block drop-shadow-lg">Bienvenido a la excelencia</span>
+                
+                <h1 class="font-serif font-bold mb-8 flex flex-col items-center">
+                    <span class="text-white text-5xl md:text-7xl lg:text-[6rem] tracking-tight leading-tight drop-shadow-xl">Estilo, Precisión</span>
+                    
+                    <!-- Letra 'y' elegante con fuente Great Vibes -->
+                    <span class="flex items-center gap-6 my-2 md:my-0 relative w-full justify-center">
+                        <span class="w-16 md:w-32 h-[1px] bg-gradient-to-r from-transparent to-gold/50"></span>
+                        <span class="font-script text-gold text-7xl md:text-9xl font-normal leading-[0.5] py-4 drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] select-none lowercase">y</span>
+                        <span class="w-16 md:w-32 h-[1px] bg-gradient-to-l from-transparent to-gold/50"></span>
+                    </span>
+                    
+                    <span class="text-white text-5xl md:text-7xl lg:text-[6rem] tracking-tight leading-tight drop-shadow-xl">Elegancia</span>
+                </h1>
+
+                <p class="text-gray-300/90 text-base md:text-xl mb-12 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-md">
+                    Transformamos tu imagen con cortes profesionales y atención personalizada. Más que un corte, una experiencia de caballero.
+                </p>
+
+                <div class="flex flex-col sm:flex-row justify-center gap-6 items-center">
+                    <a href="#contacto" class="w-full sm:w-auto bg-gradient-to-r from-gold-dark to-gold text-black px-10 py-4 rounded font-bold uppercase tracking-[0.15em] text-sm hover:from-white hover:to-white transition-all duration-500 shadow-gold-glow transform hover:-translate-y-1">
+                        Reservar Cita
+                    </a>
+                    <a href="#servicios" class="w-full sm:w-auto glass-card text-white px-10 py-4 rounded font-bold uppercase tracking-[0.15em] text-sm hover:text-gold transition-all duration-500">
+                        Ver Servicios
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center animate-bounce">
+                <span class="text-[10px] uppercase tracking-widest text-white/50 mb-2">Scroll</span>
+                <div class="w-[1px] h-12 bg-gradient-to-b from-gold/50 to-transparent"></div>
+            </div>
+        </section>
+
+        <!-- Nosotros Section -->
+        <section id="nosotros" class="py-32 relative">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal relative z-10">
+                <span class="text-gold font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Nuestra Historia</span>
+                <h2 class="text-white font-serif text-4xl md:text-5xl lg:text-6xl mb-8 drop-shadow-lg">La Excelencia en cada Detalle</h2>
+                <div class="w-20 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-16"></div>
+                
+                <!-- Contenedor de cristal para el texto -->
+                <div class="glass-panel p-8 md:p-12 rounded-2xl relative overflow-hidden group">
+                    <!-- Brillo interno sutil en hover -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                    
+                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed font-light relative z-10">
+                        En <strong class="text-white font-medium">Barber Shop JC</strong>, no solo cortamos el cabello; esculpimos tu identidad. Con años de experiencia en el arte de la barbería tradicional y moderna, nuestro compromiso es brindarte un servicio impecable en un ambiente de confort y exclusividad. Cada visita es un ritual diseñado para que salgas luciendo y sintiéndote en tu mejor versión.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="servicios" class="py-32 relative">
+            <!-- Separador visual de secciones -->
+            <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-20 reveal">
+                    <span class="text-gold font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Lo que hacemos</span>
+                    <h2 class="text-white font-serif text-4xl md:text-5xl lg:text-6xl drop-shadow-lg">Nuestros Servicios</h2>
+                    <div class="w-20 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-10"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Tarjeta 1 -->
+                    <div class="glass-card p-10 rounded-xl group reveal relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl group-hover:bg-gold/20 transition-all duration-700"></div>
+                        <div class="w-16 h-16 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:bg-gold/10 group-hover:border-gold/30 transition-all duration-500">
+                            <i class="fas fa-cut text-2xl text-gold"></i>
+                        </div>
+                        <h3 class="text-white font-serif text-2xl mb-4 group-hover:text-gold transition-colors">Corte Clásico</h3>
+                        <p class="text-gray-400 font-light text-sm leading-relaxed">Elegancia atemporal. Un corte tradicional ejecutado con precisión milimétrica para un look impecable de oficina o diario.</p>
+                    </div>
+
+                    <!-- Tarjeta 2 -->
+                    <div class="glass-card p-10 rounded-xl group reveal delay-100 relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl group-hover:bg-gold/20 transition-all duration-700"></div>
+                        <div class="w-16 h-16 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:bg-gold/10 group-hover:border-gold/30 transition-all duration-500">
+                            <i class="fas fa-magic text-2xl text-gold"></i>
+                        </div>
+                        <h3 class="text-white font-serif text-2xl mb-4 group-hover:text-gold transition-colors">Corte Moderno</h3>
+                        <p class="text-gray-400 font-light text-sm leading-relaxed">Tendencias actuales, degradados perfectos (fades) y texturas personalizadas que se adaptan a la forma de tu rostro.</p>
+                    </div>
+
+                    <!-- Tarjeta 3 -->
+                    <div class="glass-card p-10 rounded-xl group reveal delay-200 relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl group-hover:bg-gold/20 transition-all duration-700"></div>
+                        <div class="w-16 h-16 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:bg-gold/10 group-hover:border-gold/30 transition-all duration-500">
+                            <i class="fas fa-ruler-combined text-2xl text-gold"></i>
+                        </div>
+                        <h3 class="text-white font-serif text-2xl mb-4 group-hover:text-gold transition-colors">Barba y Perfilado</h3>
+                        <p class="text-gray-400 font-light text-sm leading-relaxed">Diseño simétrico, recorte cuidadoso, alineación de contornos con navaja y aplicación de aceites hidratantes premium.</p>
+                    </div>
+
+                    <!-- Tarjeta 4 -->
+                    <div class="glass-card p-10 rounded-xl group reveal relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl group-hover:bg-gold/20 transition-all duration-700"></div>
+                        <div class="w-16 h-16 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:bg-gold/10 group-hover:border-gold/30 transition-all duration-500">
+                            <i class="fas fa-hot-tub text-2xl text-gold"></i>
+                        </div>
+                        <h3 class="text-white font-serif text-2xl mb-4 group-hover:text-gold transition-colors">Afeitado Tradicional</h3>
+                        <p class="text-gray-400 font-light text-sm leading-relaxed">El ritual clásico con toallas calientes, espuma abundante, navaja libre y un ligero masaje facial relajante post-afeitado.</p>
+                    </div>
+
+                    <!-- Tarjeta 5 -->
+                    <div class="glass-card p-10 rounded-xl group reveal delay-100 relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl group-hover:bg-gold/20 transition-all duration-700"></div>
+                        <div class="w-16 h-16 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:bg-gold/10 group-hover:border-gold/30 transition-all duration-500">
+                            <i class="fas fa-spa text-2xl text-gold"></i>
+                        </div>
+                        <h3 class="text-white font-serif text-2xl mb-4 group-hover:text-gold transition-colors">Limpieza Facial</h3>
+                        <p class="text-gray-400 font-light text-sm leading-relaxed">Renovación total para tu piel. Exfoliación intensa, extracción cuidadosa de impurezas e hidratación profunda.</p>
+                    </div>
+
+                    <!-- Tarjeta 6 -->
+                    <div class="glass-card p-10 rounded-xl group reveal delay-200 relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl group-hover:bg-gold/20 transition-all duration-700"></div>
+                        <div class="w-16 h-16 bg-black/50 border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:bg-gold/10 group-hover:border-gold/30 transition-all duration-500">
+                            <i class="fas fa-mask text-2xl text-gold"></i>
+                        </div>
+                        <h3 class="text-white font-serif text-2xl mb-4 group-hover:text-gold transition-colors">Mascarilla Purificante</h3>
+                        <p class="text-gray-400 font-light text-sm leading-relaxed">Tratamiento efectivo que elimina puntos negros, controla el exceso de grasa y cierra poros para una piel visiblemente mate.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" class="py-32 relative">
+            <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    <!-- Info de Contacto -->
+                    <div class="reveal">
+                        <span class="text-gold font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Reserva tu cita</span>
+                        <h2 class="text-white font-serif text-4xl md:text-5xl lg:text-6xl mb-8 drop-shadow-lg">Ponte en Contacto</h2>
+                        <p class="text-gray-300 mb-12 font-light leading-relaxed">Agenda tu cita fácilmente a través de WhatsApp o síguenos en Instagram para ver la calidad de nuestros últimos trabajos.</p>
+
+                        <div class="space-y-6">
+                            <!-- WhatsApp Carlos -->
+                            <div class="glass-card p-5 rounded-xl flex items-center group">
+                                <div class="w-14 h-14 bg-black/60 border border-white/5 rounded-full flex items-center justify-center mr-6 group-hover:border-[#25D366] transition-all">
+                                    <i class="fab fa-whatsapp text-2xl text-[#25D366]"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Especialista</p>
+                                    <p class="text-white font-serif text-xl">Carlos Gaspar</p>
+                                    <p class="text-gold font-medium mt-1">797 122 9653</p>
+                                </div>
+                                <a href="https://wa.me/527971229653" target="_blank" rel="noopener noreferrer" class="border border-[#25D366]/50 text-[#25D366] hover:bg-[#25D366] hover:text-white px-5 py-2.5 rounded text-xs uppercase tracking-widest font-bold transition-all shadow-[0_0_15px_rgba(37,211,102,0.1)]">
+                                    Mensaje
+                                </a>
+                            </div>
+
+                            <!-- WhatsApp Jose -->
+                            <div class="glass-card p-5 rounded-xl flex items-center group">
+                                <div class="w-14 h-14 bg-black/60 border border-white/5 rounded-full flex items-center justify-center mr-6 group-hover:border-[#25D366] transition-all">
+                                    <i class="fab fa-whatsapp text-2xl text-[#25D366]"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Especialista</p>
+                                    <p class="text-white font-serif text-xl">Jose Sánchez</p>
+                                    <p class="text-gold font-medium mt-1">558 127 0390</p>
+                                </div>
+                                <a href="https://wa.me/525581270390" target="_blank" rel="noopener noreferrer" class="border border-[#25D366]/50 text-[#25D366] hover:bg-[#25D366] hover:text-white px-5 py-2.5 rounded text-xs uppercase tracking-widest font-bold transition-all shadow-[0_0_15px_rgba(37,211,102,0.1)]">
+                                    Mensaje
+                                </a>
+                            </div>
+
+                            <!-- Instagram -->
+                            <div class="glass-card p-5 rounded-xl flex items-center group mt-4">
+                                <div class="w-14 h-14 bg-black/60 border border-white/5 rounded-full flex items-center justify-center mr-6 group-hover:border-pink-500 transition-all">
+                                    <i class="fab fa-instagram text-2xl text-transparent bg-clip-text bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888]"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Portafolio</p>
+                                    <p class="text-white font-serif text-xl">Instagram Oficial</p>
+                                    <p class="text-gray-300 font-light mt-1">@barberjc10</p>
+                                </div>
+                                <a href="https://www.instagram.com/barberjc10" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white px-6 py-2.5 rounded text-xs uppercase tracking-widest font-bold transition-all hover:opacity-90 shadow-[0_0_15px_rgba(225,48,108,0.3)]">
+                                    Seguir
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mapa Interactivo (Glass) -->
+                    <div class="reveal delay-100 flex flex-col h-full mt-10 lg:mt-0">
+                        <h4 class="text-white font-serif text-2xl mb-6 flex items-center"><i class="fas fa-map-marker-alt text-gold mr-3"></i> Nuestra Ubicación</h4>
+                        
+                        <a href="https://maps.app.goo.gl/KQV9CdyMhRqNtZX77?g_st=aw" target="_blank" rel="noopener noreferrer" class="flex-1 glass-card overflow-hidden relative min-h-[400px] flex items-center justify-center group rounded-xl p-0 border-white/20 hover:border-gold/60">
+                            <!-- Mapa difuminado de fondo -->
+                            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center opacity-30 group-hover:opacity-40 transition-opacity grayscale group-hover:grayscale-0 duration-700"></div>
+                            
+                            <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-700"></div>
+                            
+                            <div class="relative z-10 text-center p-8 flex flex-col items-center">
+                                <div class="w-20 h-20 bg-black/80 backdrop-blur-md border border-gold/50 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-gold transition-all duration-500 shadow-gold-glow">
+                                    <i class="fas fa-location-arrow text-3xl text-gold group-hover:text-black transition-colors transform group-hover:rotate-45"></i>
+                                </div>
+                                <h3 class="text-white font-serif text-3xl mb-3 group-hover:text-gold transition-colors drop-shadow-md">¿Cómo llegar?</h3>
+                                <p class="text-gray-200 text-sm max-w-xs mx-auto mb-8 font-light leading-relaxed drop-shadow-md">Toca aquí para abrir la ubicación exacta en tu aplicación de Google Maps.</p>
+                                
+                                <span class="inline-flex items-center text-xs font-bold text-black bg-gradient-to-r from-gold-dark to-gold px-8 py-4 rounded uppercase tracking-[0.2em] group-hover:from-white group-hover:to-white transition-all shadow-lg">
+                                    Iniciar Ruta <i class="fas fa-arrow-right ml-3 transform group-hover:translate-x-1 transition-transform"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="glass-panel border-t border-white/10 pt-20 pb-10 mt-10 rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                    <!-- Brand -->
+                    <div class="md:col-span-1">
+                        <a href="#" class="font-serif text-2xl font-bold tracking-widest text-white block mb-6 drop-shadow-md">
+                            BARBER SHOP <span class="text-gold">JC</span>
+                        </a>
+                        <p class="text-gray-400 text-sm leading-relaxed font-light">
+                            Estilo, precisión y elegancia. Tu barbería de confianza diseñada para el caballero moderno.
+                        </p>
+                    </div>
+
+                    <!-- Links -->
+                    <div class="md:col-span-1">
+                        <h5 class="text-white font-bold uppercase tracking-[0.2em] text-xs mb-8">Navegación</h5>
+                        <ul class="space-y-4">
+                            <li><a href="#inicio" class="text-gray-400 hover:text-gold transition-colors text-sm font-light">Inicio</a></li>
+                            <li><a href="#nosotros" class="text-gray-400 hover:text-gold transition-colors text-sm font-light">Nosotros</a></li>
+                            <li><a href="#servicios" class="text-gray-400 hover:text-gold transition-colors text-sm font-light">Servicios</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Footer -->
+                    <div class="md:col-span-2">
+                        <h5 class="text-white font-bold uppercase tracking-[0.2em] text-xs mb-8">Contacto Directo</h5>
+                        <ul class="space-y-5">
+                            <li class="flex items-start group">
+                                <i class="fab fa-whatsapp text-gold mt-1 mr-4 text-lg group-hover:text-[#25D366] transition-colors"></i>
+                                <div>
+                                    <a href="https://wa.me/527971229653" target="_blank" class="text-gray-300 hover:text-white transition-colors block font-light text-sm">Carlos Gaspar: <span class="font-medium text-white">797 122 9653</span></a>
+                                    <a href="https://wa.me/525581270390" target="_blank" class="text-gray-300 hover:text-white transition-colors block mt-2 font-light text-sm">Jose Sánchez: <span class="font-medium text-white">558 127 0390</span></a>
+                                </div>
+                            </li>
+                            <li class="flex items-center pt-2 group">
+                                <i class="fab fa-instagram text-gold mr-4 text-lg group-hover:text-[#E1306C] transition-colors"></i>
+                                <a href="https://www.instagram.com/barberjc10" target="_blank" class="text-gray-300 hover:text-white transition-colors font-light text-sm">@barberjc10</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-500 text-xs tracking-[0.1em] mb-4 md:mb-0 uppercase">
+                        &copy; 2026 Barber Shop JC. Todos los derechos reservados.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://wa.me/527971229653" target="_blank" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white hover:bg-[#25D366] hover:border-[#25D366] transition-all duration-300">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.instagram.com/barberjc10" target="_blank" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white hover:bg-[#E1306C] hover:border-[#E1306C] transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div> <!-- Fin del contenedor relativo z-10 -->
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/527971229653" target="_blank" rel="noopener noreferrer" class="fixed bottom-8 right-8 bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-[0_4px_20px_rgba(37,211,102,0.5)] hover:bg-[#20bd5a] hover:scale-110 hover:-translate-y-1 transition-all duration-300 z-50">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('open');
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.remove('open');
+                });
+            });
+
+            // Scroll Reveal Animation
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => {
+                revealOnScroll.observe(el);
+            });
+
+            // Navbar style on scroll (Glass effect enhancement)
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('glass-panel');
+                    navbar.classList.remove('bg-transparent', 'backdrop-blur-none', 'shadow-none', 'border-b-0');
+                } else {
+                    navbar.classList.remove('glass-panel');
+                    navbar.classList.add('bg-transparent', 'backdrop-blur-none', 'shadow-none', 'border-b-0');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
